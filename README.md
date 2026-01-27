@@ -4,7 +4,7 @@ Python scripts used to construct a coarse-grained (CG) amorphous silica AFM tip 
 
 **Requirements:**  
 
-Python3 or greater
+Python3 or greater  
 MDAnalysis 2.6.1 or greater
 
 **Repository Structure:**  
