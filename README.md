@@ -16,6 +16,9 @@ AFMForceLipid/
 ├── Analysis/
 │   ├── force_analysis.py     # Analyze AFM tip force data (.xvg)
 │   └── position_analysis.py  # Analyze AFM tip position data (.xvg)
+├── .gitattributes
+├── LICENSE
+├── README.md
 ```
 
 
