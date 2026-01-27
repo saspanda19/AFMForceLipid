@@ -5,11 +5,10 @@ Python scripts used to construct a coarse-grained (CG) amorphous silica AFM tip 
 **Requirements:**  
 
 Python3 or greater
-
 MDAnalysis 2.6.1 or greater
 
 **Repository Structure:**  
-
+```
 AFMForceLipid/
 ├── AFM Tip/
 │   ├── cgsilica.py        # Build CG amorphous silica from atomistic structure
@@ -17,7 +16,7 @@ AFMForceLipid/
 ├── Analysis/
 │   ├── force_analysis.py     # Analyze AFM tip force data (.xvg)
 │   └── position_analysis.py  # Analyze AFM tip position data (.xvg)
-
+```
 
 
 
