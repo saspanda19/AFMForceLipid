@@ -1,10 +1,10 @@
 import pandas as pd
 
 def main():
-    xvg_file = 'RUN34_1_100_force.xvg'  # Replace with your actual .xvg file
+    xvg_file = 'RUN_force.xvg'  # Replace with your actual .xvg file
     start_atom_index = 0  # Replace with the start of the desired atom index range
     end_atom_index = 14753  # Replace with the end of the desired atom index range
-    timeframes = [i / 1.0 for i in range(0, 100001, 10)]  # 0 to 100000 with step 10
+    timeframes = [i / 1.0 for i in range(0, 200001, 10)]  # 0 to 100000 with step 10
     calculate_sums(xvg_file, timeframes, start_atom_index, end_atom_index)
 
 def extract_forces_at_time(xvg_file, start_atom_index, end_atom_index, time_input):
@@ -57,8 +57,8 @@ def calculate_sums(xvg_file, timeframes, start_atom_index, end_atom_index):
             })
             results = pd.concat([results, new_row], ignore_index=True)
 
-    results.to_csv("Force_sums_RUN34_1_100_force.csv", index=False)
-    print("Sums saved to Force_sums_RUN34_1_100_force.csv")
+    results.to_csv("Force_sums.csv", index=False)
+    print("Sums saved to Force_sums.csv")
 
 if __name__ == "__main__":
     main()
