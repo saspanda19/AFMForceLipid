@@ -7,7 +7,7 @@ def main():
     xvg_file = 'RUN_position.xvg'  # Replace with your actual .xvg file
     start_atom_index = 0  # Replace with the start of the desired atom index range
     end_atom_index = 14753 # Replace with the end of the desired atom index range 125991
-    timeframes = [i/1.0 for i in range(0, 20001, 10)]
+    timeframes = [i/1.0 for i in range(0, 200001, 10)]
     calculate_averages_position(xvg_file, timeframes, start_atom_index, end_atom_index)
 
 def extract_coordinates_from_xvg(xvg_file, time, start_atom_index, end_atom_index):
@@ -58,7 +58,7 @@ def calculate_averages_position(xvg_file, timeframes, start_atom_index, end_atom
     # Save the results to a csv file
     results.to_csv(f"Position_averages.csv", index=False)
 
-    print(f"Averages saved to position_averages.csv")
+    print(f"Averages saved to Position_averages.csv")
 
 if __name__ == "__main__":
     main()
