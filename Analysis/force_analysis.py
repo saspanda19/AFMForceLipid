@@ -1,68 +1,64 @@
-
 import pandas as pd
 
 def main():
-    xvg_file = 'RUN_force.xvg'  # Replace with your actual .xvg file
+    xvg_file = 'RUN34_1_100_force.xvg'  # Replace with your actual .xvg file
     start_atom_index = 0  # Replace with the start of the desired atom index range
-    end_atom_index = 14753 # Replace with the end of the desired atom index range 125991
-    timeframes = [i/1.0 for i in range(0, 200001, 10)]
-    calculate_averages(xvg_file, timeframes, start_atom_index, end_atom_index)
-
+    end_atom_index = 14753  # Replace with the end of the desired atom index range
+    timeframes = [i / 1.0 for i in range(0, 100001, 10)]  # 0 to 100000 with step 10
+    calculate_sums(xvg_file, timeframes, start_atom_index, end_atom_index)
 
 def extract_forces_at_time(xvg_file, start_atom_index, end_atom_index, time_input):
     """
-    Extracts forces (X, Y, Z components) for a range of atoms at time=0 from a GROMACS .xvg file and writes them to a CSV file.
+    Extracts forces (X, Y, Z components) for a range of atoms at a given time from a GROMACS .xvg file.
 
     Args:
         xvg_file (str): Path to the GROMACS .xvg file.
-        start_atom_index (int): Start index of the atom range (e.g., 1 for Atom 1).
+        start_atom_index (int): Start index of the atom range (0-based).
         end_atom_index (int): End index of the atom range (inclusive).
-        output_file (str): Path to the output CSV file.
+        time_input (float): Simulation time to extract forces for.
 
     Returns:
-        None
+        DataFrame: DataFrame containing time, atom index, and force components (Fx, Fy, Fz).
     """
-    forces_at_time_zero = []
-    with open(xvg_file, 'r') as file:  
+    forces_at_time = []
+    with open(xvg_file, 'r') as file:
         for line in file:
-            if not line.startswith(('#', '@')):  # Skip comment and parameter lines
+            if not line.startswith(('#', '@')):
                 tokens = line.split()
                 time = float(tokens[0])
-                if time == time_input:  # Check if time is 0
-                    if len(tokens) >= (end_atom_index * 3 + 4):  # Check if tokens has enough elements
+                if time == time_input:
+                    if len(tokens) >= (end_atom_index * 3 + 4):
                         for atom_index in range(start_atom_index, end_atom_index + 1):
-                            fx, fy, fz = float(tokens[atom_index * 3 + 1]), float(tokens[atom_index * 3 + 2]), float(tokens[atom_index * 3 + 3])
-                            forces_at_time_zero.append([time, atom_index, fx, fy, fz])
-                        break  # Exit the loop once forces at time=0 are found
+                            fx = float(tokens[atom_index * 3 + 1])
+                            fy = float(tokens[atom_index * 3 + 2])
+                            fz = float(tokens[atom_index * 3 + 3])
+                            forces_at_time.append([time, atom_index, fx, fy, fz])
+                    break
 
-    DF = pd.DataFrame(forces_at_time_zero, columns=["time", "index", "Fx", "Fy", "Fz"])
-    #df.to_csv(output_file, index=False)
-    return DF
+    return pd.DataFrame(forces_at_time, columns=["time", "index", "Fx", "Fy", "Fz"])
 
-def calculate_averages(xvg_file, timeframes, start_atom_index, end_atom_index):
-    # Initialize an empty dataframe to store the results
-    results = pd.DataFrame(columns=['time', 'avg_Fx', 'avg_Fy', 'avg_Fz'])
+def calculate_sums(xvg_file, timeframes, start_atom_index, end_atom_index):
+    results = pd.DataFrame(columns=['time', 'sum_Fx', 'sum_Fy', 'sum_Fz'])
 
     for time in timeframes:
-        print(time)
-        # Check if the file exists
-        # Read the csv file
+        print(f"Processing time = {time} ps")
         df = extract_forces_at_time(xvg_file, start_atom_index, end_atom_index, time)
 
-        # Calculate the averages
-        avg_Fx = df['Fx'].mean()
-        avg_Fy = df['Fy'].mean()
-        avg_Fz = df['Fz'].mean()
+        if not df.empty:
+            sum_Fx = df['Fx'].sum()
+            sum_Fy = df['Fy'].sum()
+            sum_Fz = df['Fz'].sum()
 
-        # Append the results to the dataframe
-        new_row = pd.DataFrame({'time': [time], 'avg_Fx': [avg_Fx], 'avg_Fy': [avg_Fy], 'avg_Fz': [avg_Fz]})
-        results = pd.concat([results, new_row], ignore_index=True)
+            new_row = pd.DataFrame({
+                'time': [time],
+                'sum_Fx': [sum_Fx],
+                'sum_Fy': [sum_Fy],
+                'sum_Fz': [sum_Fz]
+            })
+            results = pd.concat([results, new_row], ignore_index=True)
 
-    # Save the results to a csv file
-    results.to_csv(f"Force_averages.csv", index=False)
-
-    print(f"Averages saved to Force_averages.csv")
+    results.to_csv("Force_sums_RUN34_1_100_force.csv", index=False)
+    print("Sums saved to Force_sums_RUN34_1_100_force.csv")
 
 if __name__ == "__main__":
     main()
-
