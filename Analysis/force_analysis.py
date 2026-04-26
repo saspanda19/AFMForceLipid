@@ -4,7 +4,7 @@ def main():
     xvg_file = 'RUN_force.xvg'  # Replace with your actual .xvg file
     start_atom_index = 0  # Replace with the start of the desired atom index range
     end_atom_index = 14753  # Replace with the end of the desired atom index range
-    timeframes = [i / 1.0 for i in range(0, 200001, 10)]  # 0 to 100000 with step 10
+    timeframes = [i / 1.0 for i in range(0, 100001, 10)]  # 0 to 100000 with step 10
     calculate_sums(xvg_file, timeframes, start_atom_index, end_atom_index)
 
 def extract_forces_at_time(xvg_file, start_atom_index, end_atom_index, time_input):
